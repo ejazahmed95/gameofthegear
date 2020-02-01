@@ -24,9 +24,6 @@ public class PlayerController: MonoBehaviour {
 
 	// References
 
-	private void Awake() {
-		
-	}
 
 	private void Start() {
 		EnableComponents();
@@ -50,4 +47,5 @@ public class PlayerController: MonoBehaviour {
 			wheels.SetActive(false);
 		}
 	}
+	
 }
