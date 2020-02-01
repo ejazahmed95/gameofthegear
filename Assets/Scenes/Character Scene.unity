@@ -798,6 +798,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 230315637, guid: ce2c7bfeb2008334b844245426882aeb, type: 3}
+      propertyPath: _components
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 8488256044628473288, guid: ce2c7bfeb2008334b844245426882aeb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -860,53 +864,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce2c7bfeb2008334b844245426882aeb, type: 3}
---- !u!1 &230315632 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8488256044628473289, guid: ce2c7bfeb2008334b844245426882aeb,
-    type: 3}
-  m_PrefabInstance: {fileID: 230315631}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &230315633 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8488256043194589198, guid: ce2c7bfeb2008334b844245426882aeb,
-    type: 3}
-  m_PrefabInstance: {fileID: 230315631}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &230315634 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8488256044488336390, guid: ce2c7bfeb2008334b844245426882aeb,
-    type: 3}
-  m_PrefabInstance: {fileID: 230315631}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &230315635 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8488256043420065221, guid: ce2c7bfeb2008334b844245426882aeb,
-    type: 3}
-  m_PrefabInstance: {fileID: 230315631}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &230315636 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8488256043151505567, guid: ce2c7bfeb2008334b844245426882aeb,
-    type: 3}
-  m_PrefabInstance: {fileID: 230315631}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &230315637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 230315632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dc90f851f51505498a00d4b587b6e5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  head: {fileID: 230315636}
-  torso: {fileID: 230315635}
-  hands: {fileID: 230315634}
-  wheels: {fileID: 230315633}
-  _components: -1
 --- !u!1 &236595424
 GameObject:
   m_ObjectHideFlags: 0
