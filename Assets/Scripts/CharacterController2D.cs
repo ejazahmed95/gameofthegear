@@ -5,6 +5,13 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class CharacterController2D : MonoBehaviour {
 
+	// Config
+	
+	
+	// State
+	
+	
+	// References
 	// player controls
 	[Range(0.0f, 10.0f)] // create a slider in the editor and set limits on moveSpeed
 	public float moveSpeed = 3f;
