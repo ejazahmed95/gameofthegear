@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,7 +7,9 @@ public class MovingPlatform: MonoBehaviour, IInteractableObject {
 	[SerializeField] private Vector2 _moveDirection;
 	
 	// state variables
-	[SerializeField] private List<Transform> _attachedTransforms;
+	// [SerializeField] private List<Transform> _attachedTransforms;
+	[SerializeField] private bool _shouldMoveAttachments;
+	[SerializeField] private List<IInteractableObject> _linkInteractableObjects = new List<IInteractableObject>(); 
 	private bool _isActive;
 	private float _power;
 	
@@ -15,7 +18,7 @@ public class MovingPlatform: MonoBehaviour, IInteractableObject {
 
 	private void Awake() {
 		_transform = transform;
-		_attachedTransforms = new List<Transform>();
+		// _attachedTransforms = new List<Transform>();
 	}
 
 	// #region IInteractableObject
@@ -24,7 +27,13 @@ public class MovingPlatform: MonoBehaviour, IInteractableObject {
 		var deltaX = _moveDirection.x* dt;
 		var deltaY = _moveDirection.y * dt;
 		_transform.position = new Vector2(_transform.position.x+deltaX, _transform.position.y + deltaY);
-		triggerTransform.position = new Vector2(triggerTransform.position.x+deltaX, triggerTransform.position.y + deltaY);
+		if (_shouldMoveAttachments) {
+			triggerTransform.position = new Vector2(triggerTransform.position.x+deltaX, triggerTransform.position.y + deltaY);
+		}
+		foreach (var interactableObject in _linkInteractableObjects) {
+			interactableObject.OnGearInput(_transform, dt);
+		}
+		
 	}
 
 	public void OnPowerInput() {
@@ -32,7 +41,8 @@ public class MovingPlatform: MonoBehaviour, IInteractableObject {
 	}
 
 	public void OnRemoveSource() {
-		throw new System.NotImplementedException();
+		_isActive = false;
+		// _attachedTransforms.Clear();
 	}
 
 	public bool isInputAvailable(InteractableType type) {
@@ -44,24 +54,12 @@ public class MovingPlatform: MonoBehaviour, IInteractableObject {
 		_isActive = true;
 		_power = power;
 		if (obj.tag == Constants.PlayerTag) {
-			_attachedTransforms.Add(obj.transform);
+			// _attachedTransforms.Add(obj.transform);
 		}
 	}
 
 	public void StopInteraction() {
 		_isActive = false;
-		_attachedTransforms.Clear();
-	}
-
-	private void Update() {
-		if (!_isActive) return;
-		var deltaX = _moveDirection.x * _power;
-		var deltaY = _moveDirection.x * _power;
-		var newPosition =
-			new Vector2(_transform.position.x + _moveDirection.x * _power, _transform.position.y + _power);
-		_transform.position = newPosition;
-		foreach (var t in _attachedTransforms) {
-			t.position = new Vector2(t.position.x + deltaX, t.position.y + deltaY);
-		}
+		// _attachedTransforms.Clear();
 	}
 }
