@@ -20,7 +20,7 @@ public class MovingPlatform: MonoBehaviour, IInteractableObject {
 
 	// #region IInteractableObject
 	public void OnGearInput() {
-		throw new System.NotImplementedException();
+		Debug.Log("Received input for cart");
 	}
 
 	public void OnPowerInput() {

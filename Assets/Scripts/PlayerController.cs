@@ -91,9 +91,6 @@ public class PlayerController: MonoBehaviour {
 		if (CrossPlatformInputManager.GetButtonUp("Jump") && _vy > 0f) {
 			_vy = 0f;
 		}
-		if (_isGrounded) {
-			Debug.Log("Is Grounded!!");
-		}
 		switch (_playerState) {
 			case PlayerState.ACTIVE when !_isGrounded:
 				SetState(PlayerState.JUMPING);
@@ -103,7 +100,6 @@ public class PlayerController: MonoBehaviour {
 				torso.OnJumpEnd();
 				break;
 		}
-		
 		switch (_playerState) {
 			case PlayerState.PAUSED:
 				return;
@@ -125,6 +121,7 @@ public class PlayerController: MonoBehaviour {
 			case PlayerState.INTERACTING:
 				if (CrossPlatformInputManager.GetButtonDown("Release")) {
 					handleReleaseInput();
+					break;
 				}
 				_vx = CrossPlatformInputManager.GetAxisRaw("Horizontal");
 				handleDirectionInputOnAttach();
@@ -145,10 +142,16 @@ public class PlayerController: MonoBehaviour {
 	}
 
 	private void handleReleaseInput() {
+		if (_interactingObject.isInputAvailable(InteractableType.GEAR)) {
+			head.EndInteraction();
+		} else if (_interactingObject.isInputAvailable(InteractableType.POWER)) {
+			
+		}
 		_interactingObject = null;
 	}
 
 	private void handleDirectionInputOnAttach() {
+		if (Math.Abs(_vx) < 0.01) return;
 		if (_interactingObject.isInputAvailable(InteractableType.GEAR)) {
 			head.OnInteractionInput(_vx);
 		} else if (_interactingObject.isInputAvailable(InteractableType.POWER)) {
@@ -167,6 +170,7 @@ public class PlayerController: MonoBehaviour {
 	}
 
 	private void handleInteraction() {
+		Debug.Log("Attaching to game object");
 		Vector2 travelDirection = new Vector2(1, 0);
 		if (!_facingRight) {
 			travelDirection.x *= -1;
@@ -178,11 +182,12 @@ public class PlayerController: MonoBehaviour {
 			return; 
 		}
 		SetState(PlayerState.INTERACTING);
+		Debug.Log($"Gameobject hit is {hit.gameObject.name}");
 		_interactingObject = hit.gameObject.GetComponent<IInteractableObject>();
 		if (_interactingObject.isInputAvailable(InteractableType.GEAR)) {
 			head.StartInteraction(_interactingObject);
 		} else if (_interactingObject.isInputAvailable(InteractableType.POWER)) {
-			head.EndInteraction();
+			//
 		}
 		// RaycastHit2D hit = Physics2D.Raycast(_transform.position, travelDirection, 2.0f, _interactableLayer);
 		// if (hit.collider != null) {
