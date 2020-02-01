@@ -36,13 +36,13 @@ public class PlayerController: MonoBehaviour {
 	// State
 	[SerializeField]  public PlayerComponentType _components   = PlayerComponentType.HEAD;
 	[HideInInspector] public bool                playerCanMove = true;
-	private PlayerState _playerState = PlayerState.PAUSED;
+	[SerializeField] private PlayerState _playerState = PlayerState.PAUSED;
 	
 	[SerializeField] private IInteractableObject _interactingObject;
 	[SerializeField] private IPlayerComponent _playerComponent;
 	[SerializeField] private InteractableType _type;
 
-	private Vector2 _groundCheck;
+	private Transform _groundCheck;
 
 	// hold player motion in this timestep
 	float _vx;
@@ -82,10 +82,18 @@ public class PlayerController: MonoBehaviour {
 
 	private void Update() {
 		// exit update if player cannot move or game is paused
-		if (!playerCanMove || Math.Abs(Time.timeScale) < 0.01)
-			return;
-		
-		_isGrounded = Physics2D.Linecast(_transform.position, _groundCheck, whatIsGround);
+		// if (!playerCanMove || Math.Abs(Time.timeScale) < 0.01)
+		// 	return;
+		//
+		Debug.DrawRay(transform.position, _groundCheck.position, Color.red);
+		_isGrounded = Physics2D.Linecast(_transform.position, _groundCheck.position, whatIsGround);
+		_vy = _rigidbody.velocity.y;
+		if (CrossPlatformInputManager.GetButtonUp("Jump") && _vy > 0f) {
+			_vy = 0f;
+		}
+		if (_isGrounded) {
+			Debug.Log("Is Grounded!!");
+		}
 		switch (_playerState) {
 			case PlayerState.ACTIVE when !_isGrounded:
 				SetState(PlayerState.JUMPING);
@@ -128,9 +136,7 @@ public class PlayerController: MonoBehaviour {
 
 		// If the player stops jumping mid jump and player is not yet falling
 		// then set the vertical velocity to 0 (he will start to fall from gravity)
-		if (CrossPlatformInputManager.GetButtonUp("Jump") && _vy > 0f) {
-			_vy = 0f;
-		}
+		
 
 		// if moving up then don't collide with platform layer
 		// this allows the player to jump up through things on the platform layer
@@ -152,9 +158,12 @@ public class PlayerController: MonoBehaviour {
 
 	private void handleDirectionInput() {
 		// get the current vertical velocity from the rigidbody component
-		_vy = _rigidbody.velocity.y;
+		if(!wheels.isActiveAndEnabled) return;
 		// Change the actual velocity on the rigidbody
-		_rigidbody.velocity = new Vector2(_vx * moveSpeed, _vy);
+		if(Math.Abs(_vx) > 0) {
+			wheels.onMoving(_vx * moveSpeed);
+			_rigidbody.velocity = new Vector2(_vx * moveSpeed, _vy);
+		}
 	}
 
 	private void handleInteraction() {
@@ -248,7 +257,6 @@ public class PlayerController: MonoBehaviour {
 		torso.Disable();
 		hands.Disable();
 		wheels.Disable();
-		_groundCheck = _transform.position;
 		if ((_components & PlayerComponentType.HEAD) != PlayerComponentType.NONE) {
 			// Disable collider for head
 			head.Enable();

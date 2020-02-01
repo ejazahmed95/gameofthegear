@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerTorso: MonoBehaviour, IPlayerComponent {
 	
-	[SerializeField] private GameObject groundCheckPosition;
+	[SerializeField] private Transform groundCheckPosition;
 	[SerializeField] private Animator _animator;
 
 	private void Start() {
@@ -12,9 +12,9 @@ public class PlayerTorso: MonoBehaviour, IPlayerComponent {
 			Debug.LogError($"Animator component missing from {gameObject.name}");
 	}
 
-	public Vector2 getGroundCheck() {
+	public Transform getGroundCheck() {
 		// Store this variable beforehand
-		return groundCheckPosition.transform.position;
+		return groundCheckPosition;
 	}
 
 	public void Enable() {

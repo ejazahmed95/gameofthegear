@@ -2,11 +2,11 @@
 using UnityEngine;
 
 public class PlayerWheels: MonoBehaviour, IPlayerComponent {
-	[SerializeField] private GameObject groundCheckPosition;
+	[SerializeField] private Transform groundCheckPosition;
 	
-	public Vector2 getGroundCheck() {
+	public Transform getGroundCheck() {
 		// Store this variable beforehand
-		return groundCheckPosition.transform.position;
+		return groundCheckPosition;
 	}
 
 	public void Enable() {
@@ -15,5 +15,9 @@ public class PlayerWheels: MonoBehaviour, IPlayerComponent {
 
 	public void Disable() {
 		gameObject.SetActive(false);
+	}
+
+	public void onMoving(float f) {
+		// Run moving animation where f is the speed
 	}
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public interface IPlayerComponent {
-	Vector2 getGroundCheck();
+	Transform getGroundCheck();
 	void Enable();
 	void Disable();
 }

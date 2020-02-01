@@ -1444,7 +1444,7 @@ Transform:
   - {fileID: 91920864}
   - {fileID: 923316374}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &290024385
 PrefabInstance:
@@ -3135,6 +3135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 923316374}
   - component: {fileID: 923316375}
+  - component: {fileID: 923316376}
   m_Layer: 12
   m_Name: cart
   m_TagString: Untagged
@@ -3208,6 +3209,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &923316376
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923316373}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.12, y: 2.56}
+    newSize: {x: 5.12, y: 2.56}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5.12, y: 2.56}
+  m_EdgeRadius: 0
 --- !u!1 &955027818
 GameObject:
   m_ObjectHideFlags: 0
@@ -4215,10 +4242,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 230315637, guid: ce2c7bfeb2008334b844245426882aeb, type: 3}
+      propertyPath: _components
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8488256044628473288, guid: ce2c7bfeb2008334b844245426882aeb,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.529037
+      value: -9.43
       objectReference: {fileID: 0}
     - target: {fileID: 8488256044628473288, guid: ce2c7bfeb2008334b844245426882aeb,
         type: 3}
@@ -5358,7 +5389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c23885206afee45ae34cb6ef534cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 1659315594}
   damping: 0
   lookAheadFactor: 0
   lookAheadReturnSpeed: 0
@@ -5992,6 +6023,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4855350568662140, guid: 48ffd8182579b1543bf8819da6ff36a5,
     type: 3}
   m_PrefabInstance: {fileID: 1658676653}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1659315594 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8488256044628473288, guid: ce2c7bfeb2008334b844245426882aeb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1189921054}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1664506732
 PrefabInstance:

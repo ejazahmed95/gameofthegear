@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class PlayerHead: MonoBehaviour, IPlayerComponent {
 
-	[SerializeField] private GameObject groundCheckPosition;
+	[SerializeField] private Transform groundCheckPosition;
 	[SerializeField] private IInteractableObject _interactableObject;
 	
-	public Vector2 getGroundCheck() {
+	public Transform getGroundCheck() {
 		// Store this variable beforehand
-		return groundCheckPosition.transform.position;
+		return groundCheckPosition;
 	}
 
 	public void Enable() {

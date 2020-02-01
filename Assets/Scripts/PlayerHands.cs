@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public class PlayerHands: MonoBehaviour, IPlayerComponent {
-	public Vector2 getGroundCheck() {
+	public Transform getGroundCheck() {
 		throw new System.NotImplementedException();
 	}
 
