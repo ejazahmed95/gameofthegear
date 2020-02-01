@@ -9,7 +9,7 @@ public class MovingPlatform: MonoBehaviour, IInteractableObject {
 	// state variables
 	// [SerializeField] private List<Transform> _attachedTransforms;
 	[SerializeField] private bool _shouldMoveAttachments;
-	[SerializeField] private List<IInteractableObject> _linkInteractableObjects = new List<IInteractableObject>(); 
+	[SerializeField] private List<MovingPlatform> _linkInteractableObjects;
 	private bool _isActive;
 	private float _power;
 	
