@@ -124,7 +124,7 @@ public class PlayerController: MonoBehaviour {
 					break;
 				}
 				_vx = CrossPlatformInputManager.GetAxisRaw("Horizontal");
-				handleDirectionInputOnAttach();
+				handleDirectionInputOnAttach(Time.deltaTime);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException();
@@ -148,12 +148,13 @@ public class PlayerController: MonoBehaviour {
 			
 		}
 		_interactingObject = null;
+		_rigidbody.isKinematic = false;
 	}
 
-	private void handleDirectionInputOnAttach() {
+	private void handleDirectionInputOnAttach(float dt) {
 		if (Math.Abs(_vx) < 0.01) return;
 		if (_interactingObject.isInputAvailable(InteractableType.GEAR)) {
-			head.OnInteractionInput(_vx);
+			head.OnInteractionInput(_transform, dt ,_vx);
 		} else if (_interactingObject.isInputAvailable(InteractableType.POWER)) {
 			
 		}
@@ -182,6 +183,7 @@ public class PlayerController: MonoBehaviour {
 			return; 
 		}
 		SetState(PlayerState.INTERACTING);
+		_rigidbody.isKinematic = true;
 		Debug.Log($"Gameobject hit is {hit.gameObject.name}");
 		_interactingObject = hit.gameObject.GetComponent<IInteractableObject>();
 		if (_interactingObject.isInputAvailable(InteractableType.GEAR)) {

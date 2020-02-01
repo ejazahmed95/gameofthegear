@@ -19,8 +19,12 @@ public class MovingPlatform: MonoBehaviour, IInteractableObject {
 	}
 
 	// #region IInteractableObject
-	public void OnGearInput() {
+	public void OnGearInput(Transform triggerTransform, float dt) {
 		Debug.Log("Received input for cart");
+		var deltaX = _moveDirection.x* dt;
+		var deltaY = _moveDirection.y * dt;
+		_transform.position = new Vector2(_transform.position.x+deltaX, _transform.position.y + deltaY);
+		triggerTransform.position = new Vector2(triggerTransform.position.x+deltaX, triggerTransform.position.y + deltaY);
 	}
 
 	public void OnPowerInput() {

@@ -27,8 +27,8 @@ public class PlayerHead: MonoBehaviour, IPlayerComponent {
 		_interactableObject = null;
 	}
 
-	public void OnInteractionInput(float vx) {
+	public void OnInteractionInput(Transform parentTransform, float dt, float vx) {
 		if (!isActiveAndEnabled || _interactableObject == null) return;
-		_interactableObject.OnGearInput();
+		_interactableObject.OnGearInput(parentTransform, dt);
 	}
 }

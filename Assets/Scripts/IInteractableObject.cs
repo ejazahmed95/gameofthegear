@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public interface IInteractableObject {
-	void OnGearInput();
+	void OnGearInput(Transform triggerTransform, float dt);
 	void OnPowerInput();
 	void OnRemoveSource();
 	bool isInputAvailable(InteractableType type);
