@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class MovingPlatform: MonoBehaviour, IGearInput {
+public class MovingPlatform: MonoBehaviour, IInteractableObject {
 	[SerializeField] private Vector2 _moveDirection;
 	
 	// state variables
@@ -18,6 +18,24 @@ public class MovingPlatform: MonoBehaviour, IGearInput {
 		_attachedTransforms = new List<Transform>();
 	}
 
+	// #region IInteractableObject
+	public void OnGearInput() {
+		throw new System.NotImplementedException();
+	}
+
+	public void OnPowerInput() {
+		throw new System.NotImplementedException();
+	}
+
+	public void OnRemoveSource() {
+		throw new System.NotImplementedException();
+	}
+
+	public bool isInputAvailable(InteractableType type) {
+		return type == InteractableType.GEAR;
+	}
+
+	// #endregion
 	public void StartInteraction(GameObject obj, float power) {
 		_isActive = true;
 		_power = power;

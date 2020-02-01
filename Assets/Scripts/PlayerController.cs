@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -11,6 +9,13 @@ public enum PlayerComponentType {
 	TORSO  = 1 << 2,
 	HANDS  = 1 << 3,
 	WHEELS = 1 << 4
+}
+
+public enum PlayerState {
+	PAUSED,
+	ACTIVE, // Moving
+	JUMPING,
+	INTERACTING
 }
 
 public class PlayerController: MonoBehaviour {
@@ -26,10 +31,16 @@ public class PlayerController: MonoBehaviour {
 
 	[SerializeField] private float     jumpForce = 600f;
 	[SerializeField] private LayerMask whatIsGround;
+	[SerializeField] private LayerMask _interactableLayer;
 
 	// State
 	[SerializeField]  public PlayerComponentType _components   = PlayerComponentType.HEAD;
 	[HideInInspector] public bool                playerCanMove = true;
+	private PlayerState _playerState = PlayerState.PAUSED;
+	
+	[SerializeField] private IInteractableObject _interactingObject;
+	[SerializeField] private IPlayerComponent _playerComponent;
+	[SerializeField] private InteractableType _type;
 
 	private Vector2 _groundCheck;
 
@@ -56,42 +67,64 @@ public class PlayerController: MonoBehaviour {
 
 	private void Start() {
 		EnableComponents();
+		SetState(PlayerState.ACTIVE);
 	}
 
-	// this is where most of the player controller magic happens each game event loop
-	void Update() {
-		// exit update if player cannot move or game is paused
-		if (!playerCanMove || (Time.timeScale == 0f))
-			return;
-
-		// determine horizontal velocity change based on the horizontal input
-		_vx = CrossPlatformInputManager.GetAxisRaw("Horizontal");
-
-		// Determine if running based on the horizontal movement
-		// if (_vx != 0) {
-		// 	_isRunning = true;
-		// } else {
-		// 	_isRunning = false;
-		// }
-
-		// set the running animation state
-		// _animator.SetBool("Running", _isRunning);
-
-		// get the current vertical velocity from the rigidbody component
-		_vy = _rigidbody.velocity.y;
-
-		// Check to see if character is grounded by raycasting from the middle of the player
-		// down to the groundCheck position and see if collected with gameobjects on the
-		// whatIsGround layer 
-		_isGrounded = Physics2D.Linecast(_transform.position, _groundCheck, whatIsGround);
-
-		// Set the grounded animation states
-		// _animator.SetBool("Grounded", _isGrounded);
-
-		if (_isGrounded && CrossPlatformInputManager.GetButtonDown("Jump")) {
-			// If grounded AND jump button pressed, then allow the player to jump
-			DoJump();
+	private bool SetState(PlayerState newState) {
+		if (newState == PlayerState.PAUSED) {
+			_rigidbody.isKinematic = true;
+		} else {
+			_rigidbody.isKinematic = false;
 		}
+		_playerState = newState;
+		return true;
+	}
+
+	private void Update() {
+		// exit update if player cannot move or game is paused
+		if (!playerCanMove || Math.Abs(Time.timeScale) < 0.01)
+			return;
+		
+		_isGrounded = Physics2D.Linecast(_transform.position, _groundCheck, whatIsGround);
+		switch (_playerState) {
+			case PlayerState.ACTIVE when !_isGrounded:
+				SetState(PlayerState.JUMPING);
+				break;
+			case PlayerState.JUMPING when _isGrounded:
+				SetState(PlayerState.ACTIVE);
+				torso.OnJumpEnd();
+				break;
+		}
+		
+		switch (_playerState) {
+			case PlayerState.PAUSED:
+				return;
+			case PlayerState.ACTIVE:
+				if (CrossPlatformInputManager.GetButtonDown("Jump")) {
+					handleJump();
+				} else if (CrossPlatformInputManager.GetButtonDown("Attach")) {
+					handleInteraction();
+				} else {
+					_vx = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+					handleDirectionInput();
+				}
+				break;
+			case PlayerState.JUMPING:
+				// todo: Can you interact while jumping as well?
+				_vx = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+				handleDirectionInput();
+				break;
+			case PlayerState.INTERACTING:
+				if (CrossPlatformInputManager.GetButtonDown("Release")) {
+					handleReleaseInput();
+				}
+				_vx = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+				handleDirectionInputOnAttach();
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
+		// determine horizontal velocity change based on the horizontal input
 
 		// If the player stops jumping mid jump and player is not yet falling
 		// then set the vertical velocity to 0 (he will start to fall from gravity)
@@ -99,15 +132,55 @@ public class PlayerController: MonoBehaviour {
 			_vy = 0f;
 		}
 
-		// Change the actual velocity on the rigidbody
-		_rigidbody.velocity = new Vector2(_vx * moveSpeed, _vy);
-
 		// if moving up then don't collide with platform layer
 		// this allows the player to jump up through things on the platform layer
 		// NOTE: requires the platforms to be on a layer named "Platform"
 		Physics2D.IgnoreLayerCollision(_playerLayer, _platformLayer, _vy > 0.0f);
 	}
-	
+
+	private void handleReleaseInput() {
+		_interactingObject = null;
+	}
+
+	private void handleDirectionInputOnAttach() {
+		if (_interactingObject.isInputAvailable(InteractableType.GEAR)) {
+			head.OnInteractionInput(_vx);
+		} else if (_interactingObject.isInputAvailable(InteractableType.POWER)) {
+			
+		}
+	}
+
+	private void handleDirectionInput() {
+		// get the current vertical velocity from the rigidbody component
+		_vy = _rigidbody.velocity.y;
+		// Change the actual velocity on the rigidbody
+		_rigidbody.velocity = new Vector2(_vx * moveSpeed, _vy);
+	}
+
+	private void handleInteraction() {
+		Vector2 travelDirection = new Vector2(1, 0);
+		if (!_facingRight) {
+			travelDirection.x *= -1;
+		}
+		var radius = 2.0f;
+
+		Collider2D hit = Physics2D.OverlapCircle(_transform.position, radius, _interactableLayer);
+		if (hit == null) {
+			return; 
+		}
+		SetState(PlayerState.INTERACTING);
+		_interactingObject = hit.gameObject.GetComponent<IInteractableObject>();
+		if (_interactingObject.isInputAvailable(InteractableType.GEAR)) {
+			head.StartInteraction(_interactingObject);
+		} else if (_interactingObject.isInputAvailable(InteractableType.POWER)) {
+			head.EndInteraction();
+		}
+		// RaycastHit2D hit = Physics2D.Raycast(_transform.position, travelDirection, 2.0f, _interactableLayer);
+		// if (hit.collider != null) {
+		// 	_interactingObject = hit.collider.gameObject.GetComponent<IInteractableObject>();
+		// }
+	}
+
 	// Checking to see if the sprite should be flipped
 	// this is done in LateUpdate since the Animator may override the localScale
 	// this code will flip the player even if the animator is controlling scale
@@ -132,13 +205,13 @@ public class PlayerController: MonoBehaviour {
 		// update the scale
 		_transform.localScale = localScale;
 	}
-	
-	private void DoJump() {
-		// reset current vertical motion to 0 prior to jump
+
+	private void handleJump() {
+		if (!torso.isActiveAndEnabled) return;
+		SetState(PlayerState.JUMPING);
 		_vy = 0f;
-		// add a force in the up direction
-		_rigidbody.AddForce (new Vector2 (0, jumpForce));
-		// play the jump sound
+		_rigidbody.AddForce(new Vector2(0, jumpForce));
+		torso.OnJumpTrigger();
 		// PlaySound(jumpSFX);
 	}
 
