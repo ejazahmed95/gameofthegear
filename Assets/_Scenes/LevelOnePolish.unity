@@ -3438,6 +3438,27 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 61955835550676968, guid: ad75c72e00cf1cd42a049531ab40933d,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 61955835550676968, guid: ad75c72e00cf1cd42a049531ab40933d,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 0.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 61955835550676968, guid: ad75c72e00cf1cd42a049531ab40933d,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 212631518417135144, guid: ad75c72e00cf1cd42a049531ab40933d,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 98e972b0887e2f64ba82cc0b67523276,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad75c72e00cf1cd42a049531ab40933d, type: 3}
 --- !u!4 &988333472 stripped
