@@ -1,10 +1,11 @@
+using System;
 using UnityEngine;
 
 public interface IInteractableObject {
-	void OnGearInput(Transform triggerTransform, float dt);
+	void OnGearInput(Transform triggerTransform, float dt, bool isClockwise);
 	void OnPowerInput();
 	void OnRemoveSource();
-	bool isInputAvailable(InteractableType type);
+	bool CanInteract(InteractableType type);
 }
 
 public interface IGearInput {
@@ -17,7 +18,9 @@ public interface IPowerInput {
 	void StopInteraction();
 }
 
+[Flags]
 public enum InteractableType {
-	GEAR,
-	POWER
+	NONE  = 0,
+	GEAR  = 1 << 1,
+	POWER = 1 << 2
 }

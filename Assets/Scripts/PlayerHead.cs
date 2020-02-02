@@ -24,11 +24,13 @@ public class PlayerHead: MonoBehaviour, IPlayerComponent {
 	}
 
 	public void EndInteraction() {
+		_interactableObject.OnRemoveSource();
 		_interactableObject = null;
 	}
 
 	public void OnInteractionInput(Transform parentTransform, float dt, float vx) {
 		if (!isActiveAndEnabled || _interactableObject == null) return;
-		_interactableObject.OnGearInput(parentTransform, dt);
+		var isClockwise = !(vx > 0);
+		_interactableObject.OnGearInput(parentTransform, dt, isClockwise);
 	}
 }
