@@ -3564,7 +3564,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &958114345
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4395,7 +4395,7 @@ PrefabInstance:
     - target: {fileID: 8488256044628473288, guid: ce2c7bfeb2008334b844245426882aeb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -26.4
+      value: 3.9
       objectReference: {fileID: 0}
     - target: {fileID: 8488256044628473288, guid: ce2c7bfeb2008334b844245426882aeb,
         type: 3}
@@ -4676,7 +4676,13 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Score: 0'
+  m_Text: 'A,D : Move/Rotate
+
+    E : Attach Gear
+
+    F: Detach
+
+    Space: Jump'
 --- !u!222 &1220080218
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5827,7 +5833,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -5923,7 +5929,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1622868189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7433,7 +7439,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1963119767
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7680,7 +7686,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 10
   m_Depth: -2
   m_CullingMask:
     serializedVersion: 2
@@ -7782,7 +7788,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2041904168
 RectTransform:
   m_ObjectHideFlags: 0

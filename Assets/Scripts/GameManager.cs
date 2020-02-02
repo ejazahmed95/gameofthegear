@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour {
 	// refresh all the GUI elements
 	void refreshGUI() {
 		// set the text elements of the UI
-		UIScore.text = "Score: "+score.ToString();
+		// UIScore.text = "Score: "+score.ToString();
 		UIHighScore.text = "Highscore: "+highscore.ToString ();
 		UILevel.text = _scene.name;
 		
