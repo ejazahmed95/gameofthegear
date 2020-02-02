@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cartScript : MonoBehaviour
-{
+public class cartScript : MonoBehaviour {
+    public GameObject _deathZone;
     // Start is called before the first frame update
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             GameManager.instance.GotTorso();
+            Destroy(_deathZone);
             Destroy(gameObject);
         }
     }
+    
+    
 }
