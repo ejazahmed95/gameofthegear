@@ -24,6 +24,7 @@ public class PlayerHead: MonoBehaviour, IPlayerComponent {
 	}
 
 	public void EndInteraction() {
+		_interactableObject.OnRemoveSource();
 		_interactableObject = null;
 	}
 

@@ -10,6 +10,7 @@ public class MovingPlatform: MonoBehaviour, IInteractableObject {
 	// [SerializeField] private List<Transform> _attachedTransforms;
 	[SerializeField] private bool _shouldMoveAttachments;
 	[SerializeField] private List<MovingPlatform> _linkInteractableObjects;
+	[EnumFlags] public InteractableType _allowedInteractions;
 	private bool _isActive;
 	private float _power;
 	
@@ -45,21 +46,8 @@ public class MovingPlatform: MonoBehaviour, IInteractableObject {
 		// _attachedTransforms.Clear();
 	}
 
-	public bool isInputAvailable(InteractableType type) {
-		return type == InteractableType.GEAR;
+	public bool CanInteract(InteractableType type) {
+		return (_allowedInteractions & type) != InteractableType.NONE;
 	}
-
 	// #endregion
-	public void StartInteraction(GameObject obj, float power) {
-		_isActive = true;
-		_power = power;
-		if (obj.tag == Constants.PlayerTag) {
-			// _attachedTransforms.Add(obj.transform);
-		}
-	}
-
-	public void StopInteraction() {
-		_isActive = false;
-		// _attachedTransforms.Clear();
-	}
 }

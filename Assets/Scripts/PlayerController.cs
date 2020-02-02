@@ -20,9 +20,9 @@ public enum PlayerState {
 
 public class PlayerController: MonoBehaviour {
 	// Config
-	[SerializeField] private PlayerHead head;
-	[SerializeField] private PlayerTorso torso;
-	[SerializeField] private PlayerHands hands;
+	[SerializeField] private PlayerHead   head;
+	[SerializeField] private PlayerTorso  torso;
+	[SerializeField] private PlayerHands  hands;
 	[SerializeField] private PlayerWheels wheels;
 
 	[Range(0.0f, 10.0f)] // create a slider in the editor and set limits on moveSpeed
@@ -34,13 +34,13 @@ public class PlayerController: MonoBehaviour {
 	[SerializeField] private LayerMask _interactableLayer;
 
 	// State
-	[SerializeField]  public PlayerComponentType _components   = PlayerComponentType.HEAD;
-	[HideInInspector] public bool                playerCanMove = true;
-	[SerializeField] private PlayerState _playerState = PlayerState.PAUSED;
-	
+	[SerializeField]  public  PlayerComponentType _components   = PlayerComponentType.HEAD;
+	[HideInInspector] public  bool                playerCanMove = true;
+	[SerializeField]  private PlayerState         _playerState  = PlayerState.PAUSED;
+
 	[SerializeField] private IInteractableObject _interactingObject;
-	[SerializeField] private IPlayerComponent _playerComponent;
-	[SerializeField] private InteractableType _type;
+	[SerializeField] private IPlayerComponent    _playerComponent;
+	[SerializeField] private InteractableType    _type;
 
 	private Transform _groundCheck;
 
@@ -87,7 +87,7 @@ public class PlayerController: MonoBehaviour {
 		//
 		Debug.DrawRay(transform.position, _groundCheck.position, Color.red);
 		_isGrounded = Physics2D.Linecast(_transform.position, _groundCheck.position, whatIsGround);
-		_vy = _rigidbody.velocity.y;
+		_vy         = _rigidbody.velocity.y;
 		if (CrossPlatformInputManager.GetButtonUp("Jump") && _vy > 0f) {
 			_vy = 0f;
 		}
@@ -114,7 +114,9 @@ public class PlayerController: MonoBehaviour {
 				}
 				break;
 			case PlayerState.JUMPING:
-				// todo: Can you interact while jumping as well?
+				if (CrossPlatformInputManager.GetButtonDown("Attach")) {
+					handleInteraction();
+				}
 				_vx = CrossPlatformInputManager.GetAxisRaw("Horizontal");
 				handleDirectionInput();
 				break;
@@ -133,38 +135,35 @@ public class PlayerController: MonoBehaviour {
 
 		// If the player stops jumping mid jump and player is not yet falling
 		// then set the vertical velocity to 0 (he will start to fall from gravity)
-		
+
 
 		// if moving up then don't collide with platform layer
-		// this allows the player to jump up through things on the platform layer
+		// this allows the player to  jump up through things on the platform layer
 		// NOTE: requires the platforms to be on a layer named "Platform"
 		Physics2D.IgnoreLayerCollision(_playerLayer, _platformLayer, _vy > 0.0f);
 	}
 
 	private void handleReleaseInput() {
-		if (_interactingObject.isInputAvailable(InteractableType.GEAR)) {
+		if (_interactingObject.CanInteract(InteractableType.GEAR)) {
 			head.EndInteraction();
-		} else if (_interactingObject.isInputAvailable(InteractableType.POWER)) {
-			
-		}
-		_interactingObject = null;
+		} else if (_interactingObject.CanInteract(InteractableType.POWER)) { }
+		_interactingObject     = null;
 		_rigidbody.isKinematic = false;
+		SetState(PlayerState.ACTIVE);
 	}
 
 	private void handleDirectionInputOnAttach(float dt) {
 		if (Math.Abs(_vx) < 0.01) return;
-		if (_interactingObject.isInputAvailable(InteractableType.GEAR)) {
-			head.OnInteractionInput(_transform, dt ,_vx);
-		} else if (_interactingObject.isInputAvailable(InteractableType.POWER)) {
-			
-		}
+		if (_interactingObject.CanInteract(InteractableType.GEAR)) {
+			head.OnInteractionInput(_transform, dt, _vx);
+		} else if (_interactingObject.CanInteract(InteractableType.POWER)) { }
 	}
 
 	private void handleDirectionInput() {
 		// get the current vertical velocity from the rigidbody component
-		if(!wheels.isActiveAndEnabled) return;
+		if (!wheels.isActiveAndEnabled) return;
 		// Change the actual velocity on the rigidbody
-		if(Math.Abs(_vx) > 0) {
+		if (Math.Abs(_vx) > 0) {
 			wheels.onMoving(_vx * moveSpeed);
 			_rigidbody.velocity = new Vector2(_vx * moveSpeed, _vy);
 		}
@@ -180,15 +179,15 @@ public class PlayerController: MonoBehaviour {
 
 		Collider2D hit = Physics2D.OverlapCircle(_transform.position, radius, _interactableLayer);
 		if (hit == null) {
-			return; 
+			return;
 		}
 		SetState(PlayerState.INTERACTING);
 		_rigidbody.isKinematic = true;
 		Debug.Log($"Gameobject hit is {hit.gameObject.name}");
 		_interactingObject = hit.gameObject.GetComponent<IInteractableObject>();
-		if (_interactingObject.isInputAvailable(InteractableType.GEAR)) {
+		if (_interactingObject.CanInteract(InteractableType.GEAR)) {
 			head.StartInteraction(_interactingObject);
-		} else if (_interactingObject.isInputAvailable(InteractableType.POWER)) {
+		} else if (_interactingObject.CanInteract(InteractableType.POWER)) {
 			//
 		}
 		// RaycastHit2D hit = Physics2D.Raycast(_transform.position, travelDirection, 2.0f, _interactableLayer);
@@ -200,8 +199,7 @@ public class PlayerController: MonoBehaviour {
 	// Checking to see if the sprite should be flipped
 	// this is done in LateUpdate since the Animator may override the localScale
 	// this code will flip the player even if the animator is controlling scale
-	void LateUpdate()
-	{
+	void LateUpdate() {
 		// get the current scale
 		Vector3 localScale = _transform.localScale;
 
@@ -214,7 +212,7 @@ public class PlayerController: MonoBehaviour {
 
 		// check to see if scale x is right for the player
 		// if not, multiple by -1 which is an easy way to flip a sprite
-		if (_facingRight && localScale.x<0 || !_facingRight && localScale.x>0) {
+		if (_facingRight && localScale.x < 0 || !_facingRight && localScale.x > 0) {
 			localScale.x *= -1;
 		}
 
