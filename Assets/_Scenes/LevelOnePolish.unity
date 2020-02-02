@@ -4053,15 +4053,30 @@ PrefabInstance:
       propertyPath: _components
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5706045869067638720, guid: ce2c7bfeb2008334b844245426882aeb,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5706045869067638720, guid: ce2c7bfeb2008334b844245426882aeb,
+        type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8269717343615760864, guid: ce2c7bfeb2008334b844245426882aeb,
+        type: 3}
+      propertyPath: m_Name
+      value: Light
+      objectReference: {fileID: 0}
     - target: {fileID: 8488256044628473288, guid: ce2c7bfeb2008334b844245426882aeb,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.07
+      value: -11.38
       objectReference: {fileID: 0}
     - target: {fileID: 8488256044628473288, guid: ce2c7bfeb2008334b844245426882aeb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.2331686
+      value: 3.69
       objectReference: {fileID: 0}
     - target: {fileID: 8488256044628473288, guid: ce2c7bfeb2008334b844245426882aeb,
         type: 3}
