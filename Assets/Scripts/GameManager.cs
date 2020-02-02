@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Experimental.AI;
 using UnityEngine.UI; // include UI namespace so can reference UI elements
 using UnityEngine.SceneManagement; // include so we can manipulate SceneManager
 
@@ -188,10 +189,12 @@ public class GameManager : MonoBehaviour {
 	public void OnPlayerDead() {
 		_player.SetActive(false);
 		// Show game over UI
+		StartCoroutine(RestartFromCheckpoint());
 	}
 
-	public void RestartFromCheckpoint() {
+	public IEnumerator RestartFromCheckpoint() {
 		// remove game over UI
+		yield return new WaitForSeconds(2);
 		_player.GetComponent<PlayerController>().Respawn(_spawnLocation);
 	}
 
