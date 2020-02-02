@@ -194,5 +194,8 @@ public class GameManager : MonoBehaviour {
 		// remove game over UI
 		_player.GetComponent<PlayerController>().Respawn(_spawnLocation);
 	}
-	
+
+	public void GotTorso() {
+		_player.GetComponent<PlayerController>().OnComponentReceived(PlayerComponentType.TORSO);
+	}
 }

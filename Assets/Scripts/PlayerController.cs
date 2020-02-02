@@ -170,7 +170,7 @@ public class PlayerController: MonoBehaviour {
 	}
 
 	private void handleInteraction() {
-		Debug.Log("Attaching to game object");
+		Debug.Log("Trying to attach to game object");
 		Vector2 travelDirection = new Vector2(1, 0);
 		if (!_facingRight) {
 			travelDirection.x *= -1;
@@ -182,6 +182,7 @@ public class PlayerController: MonoBehaviour {
 			return;
 		}
 		SetState(PlayerState.INTERACTING);
+		_rigidbody.velocity = Vector2.zero; 
 		_rigidbody.isKinematic = true;
 		Debug.Log($"Gameobject hit is {hit.gameObject.name}");
 		_interactingObject = hit.gameObject.GetComponent<IInteractableObject>();
@@ -290,5 +291,9 @@ public class PlayerController: MonoBehaviour {
 		gameObject.SetActive(true);
 		_transform.position = spawnLocation;
 	}
-	
+
+	public void OnComponentReceived(PlayerComponentType playerComponentType) {
+		_components = _components | playerComponentType;
+		EnableComponents();
+	}
 }

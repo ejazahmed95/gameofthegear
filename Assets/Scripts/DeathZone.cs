@@ -6,7 +6,7 @@ public class DeathZone : MonoBehaviour {
 	public bool destroyNonPlayerObjects = true;
 
 	// Handle gameobjects collider with a deathzone object
-	void OnTriggerEnter2D (Collision2D other) {
+	void OnTriggerEnter2D (Collider2D other) {
 		if (other.gameObject.tag == "Player")
 		{
 			GameManager.instance.OnPlayerDead();

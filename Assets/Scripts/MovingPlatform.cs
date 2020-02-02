@@ -71,4 +71,10 @@ public class MovingPlatform: MonoBehaviour, IInteractableObject {
 	}
 
 	// #endregion
+	public void UpdateDirection(Vector2 direction, float cDistance, float aDistance) {
+		_initPos = new Vector2(_transform.position.x, _transform.position.y);
+		_moveDirection = direction;
+		clockwiseDistance = cDistance;
+		anticlockDistance = aDistance;
+	}
 }
