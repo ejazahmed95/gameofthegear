@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PlatformMover2: MonoBehaviour {
 
-	[SerializeField] private Vector2 startPos;
-	[SerializeField] private Vector2 endPos;
 	[SerializeField] private List<Vector2> wayPoints = new List<Vector2>();
 	[SerializeField] private bool snapToStart;
 
