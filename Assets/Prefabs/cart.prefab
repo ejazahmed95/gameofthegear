@@ -96,6 +96,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveDirection: {x: -1, y: 0}
+  clockwiseDistance: 5
+  anticlockDistance: 0
   _shouldMoveAttachments: 1
   _linkInteractableObjects: []
   _allowedInteractions: 2

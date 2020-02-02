@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 public interface IInteractableObject {
-	void OnGearInput(Transform triggerTransform, float dt);
+	void OnGearInput(Transform triggerTransform, float dt, bool isClockwise);
 	void OnPowerInput();
 	void OnRemoveSource();
 	bool CanInteract(InteractableType type);
