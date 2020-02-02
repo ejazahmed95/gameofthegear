@@ -285,4 +285,10 @@ public class PlayerController: MonoBehaviour {
 	}
 
 	#endregion
+
+	public void Respawn(Vector3 spawnLocation) {
+		gameObject.SetActive(true);
+		_transform.position = spawnLocation;
+	}
+	
 }
