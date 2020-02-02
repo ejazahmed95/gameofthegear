@@ -90,6 +90,7 @@ public class PlayerController: MonoBehaviour {
 		_vy         = _rigidbody.velocity.y;
 		if (CrossPlatformInputManager.GetButtonUp("Jump") && _vy > 0f) {
 			_vy = 0f;
+			_rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
 		}
 		switch (_playerState) {
 			case PlayerState.ACTIVE when !_isGrounded:
@@ -162,6 +163,10 @@ public class PlayerController: MonoBehaviour {
 	private void handleDirectionInput() {
 		// get the current vertical velocity from the rigidbody component
 		if (!wheels.isActiveAndEnabled) return;
+		if (CrossPlatformInputManager.GetButtonUp("Jump") && _vy > 0f) {
+			_vy                 = 0f;
+			_rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
+		}
 		// Change the actual velocity on the rigidbody
 		if (Math.Abs(_vx) > 0) {
 			wheels.onMoving(_vx * moveSpeed);

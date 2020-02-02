@@ -60,6 +60,7 @@
     <Compile Include="Assets\cartScript.cs" />
     <Compile Include="Assets\CrossPlatformInputInitialize.cs" />
     <Compile Include="Assets\EnumFlagsAttribute.cs" />
+    <Compile Include="Assets\lightning.cs" />
     <Compile Include="Assets\Scripts\Camera2DFollow.cs" />
     <Compile Include="Assets\Scripts\CharacterController2D.cs" />
     <Compile Include="Assets\Scripts\CheckPoint.cs" />
