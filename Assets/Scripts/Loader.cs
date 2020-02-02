@@ -10,4 +10,5 @@ public class Loader: MonoBehaviour {
 		Debug.Log("Instantiating game manager");
 		Instantiate(gameManager);
 	}
+	
 }

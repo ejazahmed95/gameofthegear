@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject UIGamePaused;
 
 	// private variables
-	GameObject _player;
+	[SerializeField] GameObject _player;
 	Vector3 _spawnLocation;
 	Scene _scene;
 
@@ -57,11 +57,11 @@ public class GameManager : MonoBehaviour {
 	// setup all the variables, the UI, and provide errors if things not setup properly.
 	void setupDefaults() {
 		// setup reference to player
-		if (_player == null)
-			_player = GameObject.FindGameObjectWithTag("Player");
-		
-		if (_player==null)
-			Debug.LogError("Player not found in Game Manager");
+		// if (_player == null)
+		// 	_player = GameObject.FindGameObjectWithTag("Player");
+		//
+		// if (_player==null)
+		// 	Debug.LogError("Player not found in Game Manager");
 
 		// get current scene
 		_scene = SceneManager.GetActiveScene();
@@ -180,4 +180,19 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForSeconds(3.5f);
 		SceneManager.LoadScene(levelAfterVictory);
 	}
+
+	public void SetLastCheckpoint(Vector3 transformPosition) {
+		_spawnLocation = transformPosition;
+	}
+
+	public void OnPlayerDead() {
+		_player.SetActive(false);
+		// Show game over UI
+	}
+
+	public void RestartFromCheckpoint() {
+		// remove game over UI
+		_player.GetComponent<PlayerController>().Respawn(_spawnLocation);
+	}
+	
 }
