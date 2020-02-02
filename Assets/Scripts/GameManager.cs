@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement; // include so we can manipulate SceneManager
 public class GameManager : MonoBehaviour {
 
 	// static reference to game manager so can be called from other scripts directly (not just through gameobject component)
-	public static GameManager gm;
+	public static GameManager instance;
 
 	// levels to move to on victory and lose
 	public string levelAfterVictory;
@@ -33,8 +33,8 @@ public class GameManager : MonoBehaviour {
 	// set things up here
 	void Awake () {
 		// setup reference to game manager
-		if (gm == null)
-			gm = this.GetComponent<GameManager>();
+		if (instance == null)
+			instance = this.GetComponent<GameManager>();
 
 		// setup all the variables, the UI, and provide errors if things not setup properly.
 		setupDefaults();
